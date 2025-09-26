@@ -4,6 +4,35 @@ metadata:
   name: sx
 spec:
   targets:
+    byoc-ds-edge-alicloud-shanghai:
+      clusterRole: edge
+      matchClusterNames:
+        - byoc-ds-edge-alicloud-shanghai
+      overlay:
+        defaults:
+          delivery:
+            storageClassName: "alicloud-disk-efficiency"
+        delivery:
+          web-server:
+            ingress:
+              enabled: true
+              hosts:
+                - host: ${streamx.host.prefix}.byoc-ds-edge-alicloud-shanghai.streamx.cloud
+                  paths:
+                    - path: /*
+                      servicePort: 8084
+              tls:
+                - hosts:
+                    - ${streamx.host.prefix}.byoc-ds-edge-alicloud-shanghai.streamx.cloud
+                  secretName: wildcard-streamx-cloud.crt
+            volumes:
+              repository-volume:
+                mountPath: /var/lib/rocksdb
+                size: 20Gi
+              rocksdb:
+                mountPath: /var/lib/rocksdb
+                size: 20Gi
+      priority: 10
     byoc-arbory-edge-alicloud-hangzhou:
       clusterRole: edge
       matchClusterNames:
@@ -11,7 +40,7 @@ spec:
       overlay:
         defaults:
           delivery:
-            storageClassName: "alicloud-disk-efficiency"
+            storageClassName: "alicloud-disk-essd"
         delivery:
           web-server:
             ingress:
