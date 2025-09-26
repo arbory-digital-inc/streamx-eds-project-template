@@ -25,6 +25,13 @@ spec:
                 - hosts:
                     - ${streamx.host.prefix}.byoc-arbory-edge-alicloud-hangzhou.streamx.cloud
                   secretName: wildcard-streamx-cloud.crt
+            volumes:
+              repository-volume:
+                mountPath: /var/lib/rocksdb
+                size: 20Gi
+              rocksdb:
+                mountPath: /var/lib/rocksdb
+                size: 20Gi
       priority: 10
     edge-ap-southeast-1:
       clusterRole: edge
