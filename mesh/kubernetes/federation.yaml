@@ -4,6 +4,28 @@ metadata:
   name: sx
 spec:
   targets:
+    byoc-arbory-edge-alicloud-hangzhou:
+      clusterRole: edge
+      matchClusterNames:
+        - byoc-arbory-edge-alicloud-hangzhou
+      overlay:
+        defaults:
+          delivery:
+            storageClassName: "alicloud-disk-efficiency"
+        delivery:
+          web-server:
+            ingress:
+              enabled: true
+              hosts:
+                - host: ${streamx.host.prefix}.byoc-arbory-edge-alicloud-hangzhou.streamx.cloud
+                  paths:
+                    - path: /*
+                      servicePort: 8084
+              tls:
+                - hosts:
+                    - ${streamx.host.prefix}.byoc-arbory-edge-alicloud-hangzhou.streamx.cloud
+                  secretName: wildcard-streamx-cloud.crt
+      priority: 10
     edge-ap-southeast-1:
       clusterRole: edge
       matchClusterNames:
